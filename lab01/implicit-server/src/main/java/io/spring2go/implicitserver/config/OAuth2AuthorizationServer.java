@@ -14,6 +14,9 @@ public class OAuth2AuthorizationServer extends
     @Override
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
+        /**
+         * 初始化了2分钟的有效期，过期后得重新登录取数据
+         */
         clients.inMemory()
             .withClient("clientapp")
             .secret("112233")
