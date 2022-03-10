@@ -1,11 +1,11 @@
 package io.spring2go.clientserver.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api")
@@ -23,5 +23,10 @@ public class DevOpsController {
         users.add(new UserInfo("franky", "franky@spring2go.com"));
 
         return users;
+    }
+
+    @RequestMapping("/aa")
+    public ResponseEntity<String> getHello() {
+        return ResponseEntity.ok("hello");
     }
 }

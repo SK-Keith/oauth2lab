@@ -19,7 +19,7 @@ public class OAuth2AuthorizationServer extends
             // 密码模式
             .secret("789")
             .authorizedGrantTypes("client_credentials")
-            .scopes("devops");
+            .scopes("deveops");
     }
 
 }
