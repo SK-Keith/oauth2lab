@@ -1,10 +1,8 @@
 package io.spring2go.clientresttemplate.user;
 
-import java.net.URI;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-
+import io.spring2go.clientresttemplate.oauth.AuthorizationCodeTokenService;
+import io.spring2go.clientresttemplate.oauth.OAuth2Token;
+import io.spring2go.clientresttemplate.security.ClientUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -18,9 +16,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import io.spring2go.clientresttemplate.oauth.AuthorizationCodeTokenService;
-import io.spring2go.clientresttemplate.oauth.OAuth2Token;
-import io.spring2go.clientresttemplate.security.ClientUserDetails;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 @Controller
 public class MainPage {
@@ -59,6 +58,12 @@ public class MainPage {
         ClientUserDetails userDetails = (ClientUserDetails) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         ClientUser clientUser = userDetails.getClientUser();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        if (clientUser.getAccessTokenValidity().compareTo(calendar) <= 0) {
+            clientUser.setAccessToken(null);
+            clientUser.setAccessTokenValidity(null);
+        }
 
         if (clientUser.getAccessToken() == null) {
             String authEndpoint = tokenService.getAuthorizationEndpoint();
